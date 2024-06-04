@@ -23,7 +23,7 @@ def parse_square(filename):
             }
     with open(filename, 'r', encoding="utf8") as data:
         
-        for line in csv.DictReader(data):
+        for index, line in enumerate(csv.DictReader(data)):
             line["date"] = line.pop("Date")
             line["amount"] = Decimal(line.pop("Gross Sales").replace("$","").replace(",",""))
             line["memo"] = ""
@@ -65,7 +65,7 @@ def parse_square(filename):
             line["city"] = ""
             line["state"] = ""
             line["zip"] = ""
-            print(line)             
+            print(index, ". " ,"First name: ", line["firstname"], " Last name: ", line["lastname"], " Amount: ", line["amount"])          
             if len(names) > 1:
                 line["firstname"] = names[0]
                 line["lastname"] = names[1]
@@ -74,7 +74,8 @@ def parse_square(filename):
                 id = name.split("@")[0]                
                 line["firstname"] = id
                 line["lastname"] = id
-            parsed_data.append(line)
+            if line["amount"] != Decimal(0):  # Only append if amount is not 0
+                parsed_data.append(line)
     return parsed_data
 
 def save_giving(data, csvfilename):
@@ -88,11 +89,12 @@ def save_giving(data, csvfilename):
 
         writer = csv.DictWriter(f, fieldnames=fieldnames)
 
-        for line in _data:
+        for index, line in enumerate(_data):
             for field in list(line.keys()):
                     if field not in fieldnames:
                         del line[field]
             writer.writerow(line)
+            print(index, ". Firstname ", line["firstname"], " Lastname ", line["lastname"], " Amount ", line["amount"])
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -103,4 +105,4 @@ if __name__ == "__main__":
         file = path.basename(sys.argv[1])
         givingoutfile = '.'.join(file.split(".")[:-1])+"_giving_ready_for_breeze.csv"   
         save_giving(square_data, givingoutfile)
-        add_people_to_breeze(square_data)
+        #add_people_to_breeze(square_data)
