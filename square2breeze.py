@@ -105,4 +105,4 @@ if __name__ == "__main__":
         file = path.basename(sys.argv[1])
         givingoutfile = '.'.join(file.split(".")[:-1])+"_giving_ready_for_breeze.csv"   
         save_giving(square_data, givingoutfile)
-        #add_people_to_breeze(square_data)
+        add_people_to_breeze(square_data)

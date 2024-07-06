@@ -65,7 +65,8 @@ def add_people_to_breeze(peopledata):
                 updateperson = breeze_api.update_person(person["id"], json.dumps(fields))
                 print("updateperson: ", updateperson["first_name"], updateperson["last_name"])
         if not match and (line["firstname"] != "" or line["lastname"] != ""):
-            time.sleep(3.5)          
+            time.sleep(3.5)
+            breakpoint()          
             addperson = breeze_api.add_person(line["firstname"], line["lastname"], json.dumps(fields))
             print("Added person: ", addperson["first_name"], addperson["last_name"])
 
